@@ -1,0 +1,106 @@
+﻿@using Product_Inventory.Models.ViewModels
+@model PaginatedList<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+    var pageSize = Model.PageSize.ToString();
+}
+
+<partial name="_ShowToastrPartial" />
+
+<div class="row mt-4">
+    <div class="col-lg-9 col-md-8 col-sm-7 col-11">
+        <h1> All Products </h1>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-5 col-11 mt-sm-0 mt-2 ms-3 ms-sm-0">
+
+        <form method="get" asp-controller="Product" asp-action="Search">
+            <div class="row">
+                <div class="col-5 col-sm-8 ps-0">
+                    <input type="text" class="form-control" name="search" placeholder="Search Product" required />
+                </div>
+                <div class="col-2 col-sm-4 ps-0">
+                    <input type="submit" class="btn btn-outline-success" value="Search" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<a href="/Product/Add" class="btn btn-primary mt-4">Add Product</a>
+<hr />
+
+<p>
+    Show
+
+    <select onchange="window.open(this.value, '_self');">
+        <option value="/Product/Index?pageSize=5" id="5">5</option>
+        <option value="/Product/Index?pageSize=10" id="10">10</option>
+        <option value="/Product/Index?pageSize=15" id="15">15</option>
+        <option value="/Product/Index?pageSize=20" id="20">20</option>
+    </select>
+
+    Products
+</p>
+
+<script>
+    document.getElementById(@pageSize).selected = true;
+</script>
+
+<div class="row justify-content-evenly">
+    @if (Model.TotalItems > 0)
+    {
+        @foreach (var product in Model.Items)
+        {
+            <partial name="_ProductCardPartial" model="product" />
+        }
+    }
+    else
+    {
+        <p class="text-center mt-1">There are no products. Go to <a href="/Product/Add" class="text-decoration-none">Add Product</a> section.</p>
+    }
+
+    @*Paging*@
+    <div class="row mt-3">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <nav>
+                <ul class="pagination justify-content-end">
+                    <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                        <a class="page-link text-black" asp-route-pageNumber="1" asp-route-pageSize="@(Model.PageSize)">
+                            <span>First</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                        <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-pageSize="@(Model.PageSize)">
+                            <span>Previous</span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                            <a class="page-link text-bg-primary" asp-route-pageNumber="@i" asp-route-pageSize="@(Model.PageSize)">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                        <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-pageSize="@(Model.PageSize)">
+                            <span>Next</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link text-black" asp-route-pageNumber="@Model.TotalPages" asp-route-pageSize="@(Model.PageSize)">
+                            <span>Last</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>

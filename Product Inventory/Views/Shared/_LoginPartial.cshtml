@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Product_Inventory.Models
+
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
+
+<ul class="navbar-nav justify-content-md-end">
+    @if (signInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("user"))
+        {
+            <li class="nav-item ms-2 mt-sm-0 mt-2  fs-5">
+                <a href="/Product/Index" class="nav-link text-white">Products</a>
+            </li>
+            <li class="nav-item ms-2 mt-sm-0 mt-2  fs-5">
+                <a href="/Product/Add" class="nav-link text-white">Add Product</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item ms-2 ms-2 mt-sm-0 mt-2">
+                <a href="/Account/Index" class="nav-link text-white">Users</a>
+            </li>
+        }
+        <li class="nav-item border border-1 ms-2 text-truncate mt-sm-0 mt-2 ">
+            <a class="text-white nav-link ps-sm-1 pe-sm-1">Hello @userManager.GetUserName(User)</a>
+        </li>
+
+        <li class="nav-item ms-2 mt-md-0 mt-2">
+            <a href="/Account/LogOut" class="nav-link text-white btn btn-danger">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item mt-sm-0 mt-2">
+            <a href="/Account/Login" class="nav-link btn btn-primary text-white ms-1 px-4">Login</a>
+        </li>
+        <li class="nav-item mt-sm-0 mt-2">
+            <a href="/Account/Register" class="nav-link btn btn-danger text-white ms-2 px-4">Register</a>
+        </li>
+    }
+</ul>

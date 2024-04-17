@@ -1,0 +1,97 @@
+﻿@model Product_Inventory.Models.ViewModels.ProductViewModel
+
+@{
+    string title, buttonText, action;
+    int prodId;
+    if(Model is not null)
+    {
+        title = "Edit Product";
+        buttonText = title;
+        action = "Edit";
+        prodId = Model.ProductId;
+    }
+    else
+    {
+        title = "Add Product";
+        buttonText = title;
+        action = "Add";
+        prodId = 0;
+    }
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-10 col-lg-7 col-xl-5 card py-3">
+
+        <form enctype="multipart/form-data" method="post" asp-controller="Product" asp-action="@action">
+
+            <h2 class="text-center">@title</h2>
+            <hr />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="text" class="form-control" value="@prodId" asp-for="ProductId" hidden />
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" asp-for="Name" placeholder="Name" />
+                <label class="form-label">Name</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" asp-for="Quantity" placeholder="Quantity" />
+                        <label class="form-label">Quantity</label>
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" asp-for="Price" placeholder="Price" />
+                        <label class="form-label">Price</label>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" asp-for="Discount" placeholder="Discount" />
+                <label class="form-label">Discount in %</label>
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" asp-for="Description" placeholder="Description" style="height: 100px"></textarea>
+                <label class="form-label">Description</label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6 text-truncate">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Product Image:</label> <br />
+                        <input type="file" class="form-control-file" asp-for="ImageFile" accept=".jpg,.png,.jpeg" id="chooseImg" />
+                    </div>
+                </div>
+                <div class="col-md-6 ps-3 mt-md-0 mt-3">
+                    @if (Model is not null)
+                    {
+                        <img src="~/@Model.Image" height="100" width="100" id="productImage" />
+                    }
+                    else
+                    {
+                        <img src="~/ProductImages/placeholder_image.png" height="100" width="100" id="productImage" />
+                    }
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" class="btn btn-primary" value="@buttonText" />
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

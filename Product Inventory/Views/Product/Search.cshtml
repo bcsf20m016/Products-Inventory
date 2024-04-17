@@ -1,0 +1,43 @@
+﻿@using Product_Inventory.Models.ViewModels
+@model List<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Searched Products";
+}
+
+<a href="/Product/Index" class="btn btn-outline-dark my-2 mb-4">Go Back</a>
+
+<div class="row">
+    <div class="col-lg-9 col-md-8 col-sm-7">
+        <h1> Search results for "@ViewBag.searchTerm" </h1>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-5 mt-sm-0 mt-2 ms-3 ms-sm-0">
+
+        <form method="get" asp-controller="Product" asp-action="Search">
+            <div class="row">
+                <div class="col-5 col-sm-8 ps-0">
+                    <input type="text" class="form-control" name="search" placeholder="Search Product" required />
+                </div>
+                <div class="col-2 col-sm-4 ps-0">
+                    <input type="submit" class="btn btn-outline-success" value="Search" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<div class="row justify-content-evenly">
+    @if (Model is not null && Model.Count() > 0)
+    {
+        @foreach (var product in Model)
+        {
+            <partial name="_ProductCardPartial" model="product" />
+        }
+    }
+    else
+    {
+        <p class="text-center mt-1">No product found.</p>
+    }
+</div>

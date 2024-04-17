@@ -1,0 +1,57 @@
+﻿@model Product_Inventory.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "/Views/Shared/_AuthenticationLayout.cshtml";
+}
+
+<form method="post" asp-action="Register">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <h2 class="text-center">Create an Account</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="firstName" asp-for="FirstName" placeholder="Muhammad Bilal" />
+                <label class="form-label" for="name">First Name</label>
+                <span class="text-danger" asp-validation-for="FirstName"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="lastName" asp-for="LastName" placeholder="Saif" />
+                <label for="lastName" class="form-label">Last Name</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" asp-for="Email" placeholder="abc@gmail.com" />
+        <label class="form-label" for="email">Email</label>
+        <span class="text-danger" asp-validation-for="Email"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="password" asp-for="Password" placeholder="123" />
+        <label class="form-label" for="password">Password</label>
+        <span class="text-danger" asp-validation-for="Password"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="confirmPassword" asp-for="ConfirmPassword" placeholder="123" />
+        <label class="form-label" for="confirmPassword">Confirm Password</label>
+        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+    </div>
+
+    <div class="form-floating mt-2">
+        <input type="submit" value="Register" class="btn btn-primary px-4" />
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

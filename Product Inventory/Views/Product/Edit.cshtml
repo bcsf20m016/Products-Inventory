@@ -1,0 +1,23 @@
+﻿@model Product_Inventory.Models.ViewModels.ProductViewModel;
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<a href="/Product/Index" class="btn btn-outline-dark my-2 mb-4">Go Back</a>
+
+<partial name="_AddOrEditPartial" model="Model" />
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    @* Following code is for adding image preview *@
+    <script>
+        $('#chooseImg').change(function () {
+            const [file] = chooseImg.files;
+            if (file) {
+                productImage.src = URL.createObjectURL(file);
+            }
+        });
+    </script>
+}

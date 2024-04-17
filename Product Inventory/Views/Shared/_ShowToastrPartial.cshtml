@@ -1,0 +1,55 @@
+﻿
+<link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+<script src="~/lib/toastr/toastr.js"></script>
+
+<script>toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }</script>
+@{
+    @*@if (TempData["type"] is not null)
+        {
+            if (TempData["type"].ToString() == "success")
+            {
+                <script>
+                    toastr.success('@TempData["description"]', '@TempData["title"]');
+                </script>
+            }
+            else if(TempData["type"].ToString() == "error")
+            {
+                <script>
+                    toastr.error('@TempData["description"]', '@TempData["title"]');
+                </script>
+            }
+        }*@
+    @if (TempData["ToastrData"] is not null)
+    {
+        var d = TempData["ToastrData"] as String[];
+        if (d[0] == "success")
+        {
+            <script>
+                toastr.success('@d[2]', '@d[1]');
+            </script>
+        }
+        else
+        {
+            <script>
+                toastr.error('@d[2]', '@d[1]');
+            </script>
+        }
+    }
+
+}

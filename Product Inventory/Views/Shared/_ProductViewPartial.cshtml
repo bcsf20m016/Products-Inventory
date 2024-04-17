@@ -1,0 +1,41 @@
+﻿@model Product_Inventory.Models.ViewModels.ProductViewModel
+
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Product Details</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="~/@Model.Image" width="100%" />
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-3 mt-lg-0 mt-2">@Model.Name</h3>
+                    @if (Model.Discount != 0)
+                    {
+                        <div class="mb-3">
+                            <h5 class="fw-bold d-inline">Price: </h5>
+                            <h5 class="text-decoration-line-through me-2 d-inline">$@Model.Price</h5>
+                            <h5 class="text-danger fw-bold d-inline">$@Math.Round(Model.Price - (Model.Discount / 100.0 * Model.Price), 2)</h5>
+                            <span class="badge bg-danger ms-3 fs-6">-@Model.Discount%</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <h5 class="fw-bold mb-3 d-inline">Price: </h5> <span class="fs-5">$@Model.Price</span> <br />
+                    }
+                    <h5 class="fw-bold mb-3 d-inline">Quantity: </h5> <span class="fs-5">@Model.Quantity</span>
+                    <h5 class="fw-bold mb-3 mt-3">Description: </h5> @Model.Description
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

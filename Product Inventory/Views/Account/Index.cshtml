@@ -1,0 +1,99 @@
+﻿@using Product_Inventory.Models
+@model List<AppUser>
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+
+@{
+    int index = 1;
+    ViewData["Title"] = "Accounts";
+}
+
+<partial name="_ShowToastrPartial" />
+
+@*For JQuery Datatables*@
+<link href="~/css/DatatableCSS/jquery.dataTables.css" rel="stylesheet">
+<link href="~/css/DatatableCSS/jquery.dataTables.min.css" rel="stylesheet">
+
+<h1 class="mt-5">User Accounts</h1>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-striped border border-dark" id="dataTableData">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">No of Products</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                if (await userManager.IsInRoleAsync(user, "admin"))
+                {
+                    continue;
+                }
+
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@(user.FirstName + " " + user.LastName)</td>
+                    <td>@user.Email</td>
+                    <td>@user.Products.Count()</td>
+                    <td>@user.CreatedAt</td>
+                    <td>
+                        @if (user.LockoutEnd is null)
+                        {
+                            <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#lockUserModal-@user.Id"> <i class="fa fa-lock"></i> Lock</a>
+                        }
+                        else
+                        {
+                            <a href="/Account/UnlockUser?userId=@user.Id" class="btn btn-success"> <i class="fa fa-unlock"></i> Unlock</a>
+                        }
+                        <a class="btn btn-danger mt-lg-0 mt-2" data-bs-toggle="modal" data-bs-target="#deleteUserModal-@user.Id"> <i class="fa fa-trash"></i> Delete</a>
+                    </td>
+                </tr>
+
+                <!-- Delete User Modal -->
+                <div class="modal fade" id="deleteUserModal-@user.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <partial name="_DeleteConfirmationPartial" model="@(new List<String>{"This action is permanenet and can't be undo. Do you want to delete this user?", "Delete", $"/Account/Delete?userId={user.Id}"})" />
+                </div>
+
+                <!-- Locl User Modal -->
+                <div class="modal fade" id="lockUserModal-@user.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <partial name="_DeleteConfirmationPartial" model="@(new List<String>{"The user will be blocled for 30 days but you can unlock anytime. Do you want to continue?", "Block", $"/Account/LockUser?userId={user.Id}"})" />
+                </div>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="~/Datatable/jquery.dataTables.js"></script>
+    <script src="~/Datatable/jquery.dataTables.min.js"></script>
+
+    @* Following code is for adding JQuery DataTable *@
+    <script>
+        $('#dataTableData').DataTable({
+            pagingType: 'full_numbers',
+            lengthMenu: [[5, 10, 20, 30, 50], [5, 10, 20, 30, 50]],
+            pageLength: 10,
+            "language": {
+                "info": "Page _PAGE_ of _PAGES_",
+                "paginate": {
+                    "first": "<<",
+                    "previous": "<",
+                    "next": ">",
+                    "last": ">>"
+                }
+            }
+        });
+    </script>
+
+}
